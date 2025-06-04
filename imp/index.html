@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Auth</title>
+</head>
+<body>
+  <h2>Login or Sign Up</h2>
+
+  <input type="email" id="email" placeholder="Email"><br><br>
+  <input type="password" id="password" placeholder="Password"><br><br>
+
+  <button onclick="signup()">Sign Up</button>
+  <button onclick="login()">Log In</button>
+
+  <p id="message" style="color: red;"></p>
+
+  <script type="module">
+    // Import Firebase SDK modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
+      from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCuQG3y_eOgWPPqUlhX_Xx7Ttw-qdf0jd0",
+      authDomain: "web-13-7439c.firebaseapp.com",
+      projectId: "web-13-7439c",
+      storageBucket: "web-13-7439c.appspot.com",
+      messagingSenderId: "150374362180",
+      appId: "1:150374362180:web:74edb651d1b64503bbe011",
+      measurementId: "G-N13L357VKW"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+
+    // Sign Up function
+    window.signup = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          sessionStorage.setItem("userEmail", user.email);
+          sessionStorage.setItem("userUID", user.uid);
+          window.location.href = "welcome.html";
+        })
+        .catch((error) => {
+          document.getElementById("message").innerText = error.message;
+        });
+    };
+
+    // Log In function
+    window.login = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          sessionStorage.setItem("userEmail", user.email);
+          sessionStorage.setItem("userUID", user.uid);
+          window.location.href = "welcome.html";
+        })
+        .catch((error) => {
+          document.getElementById("message").innerText = error.message;
+        });
+    };
+  </script>
+</body>
+</html>
